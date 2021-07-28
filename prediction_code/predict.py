@@ -9,7 +9,7 @@ from PIL import Image
 print("MODULES IMPORTED")
 
 # Config
-custom_model_path = "models/my_custom_model.h5";
+custom_model_path = "/home/akash/Documents/JSS college Stuff/Capstone Project/code/with_validation_split/models/nas_net/nas_net_model_30_ephocs.h5";
 custom_testing_images_path = "testing_images";
 classes = ['fresh apples', 'fresh banana', 'fresh oranges', 'rotten apple', 'rotten banana', 'rotten orange']
 
@@ -46,7 +46,7 @@ def start_video_capture():
         fontScale = 1
         color = (255, 0, 0)
         thickness = 2
-        image = cv2.putText(frame, predicted_class , org, font,
+        image = cv2.putText(frame , f"{predicted_class} - {confidence_score}" , org, font,
                            fontScale, color, thickness, cv2.LINE_AA)
 
         cv2.imshow('Camera', frame)
@@ -85,8 +85,8 @@ def predict_custom_images():
 
 
 def main():
-    predict_custom_images()
-    # start_video_capture()
+    # predict_custom_images()
+    start_video_capture()
 
 if __name__ == '__main__':
     main()
