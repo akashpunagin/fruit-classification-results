@@ -41,13 +41,11 @@ def start_video_capture():
             predicted_class = "No Fruit Detected"
 
         font = cv2.FONT_HERSHEY_SIMPLEX
-        org = (50, 50)
         fontScale = 1
         color = (255, 0, 0)
         thickness = 2
-        image = cv2.putText(frame , f"{predicted_class} - {confidence_score}" , org, font,
-                           fontScale, color, thickness, cv2.LINE_AA)
-
+        image = cv2.putText(frame , f"{predicted_class}" , (50, 50), font, fontScale, color, thickness, cv2.LINE_AA)
+        image = cv2.putText(frame , str(round(confidence_score, 2)) , (50, 100), font, fontScale, color, thickness, cv2.LINE_AA)
         cv2.imshow('Camera', frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
