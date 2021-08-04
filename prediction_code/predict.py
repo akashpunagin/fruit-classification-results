@@ -8,9 +8,10 @@ from PIL import Image
 print("MODULES IMPORTED")
 
 # Config
-custom_model_path = "/home/akash/Documents/JSS college Stuff/Capstone Project/code/with_validation_split/models/nas_net/nas_net_model_30_ephocs.h5";
+custom_model_path = "/home/akash/Documents/JSS college Stuff/Capstone Project/code/without_validation_split/models/using_nas_net/nas_net_model_5_epochs.h5";
 custom_testing_images_path = "testing_images";
 classes = ['fresh apples', 'fresh banana', 'fresh oranges', 'rotten apple', 'rotten banana', 'rotten orange']
+confidence_threshold = 0.90
 
 model = keras.models.load_model(custom_model_path)
 
@@ -35,7 +36,7 @@ def start_video_capture():
         img = get_pre_processed_img(frame)
         prediction = model.predict(img)
         confidence_score = np.amax(prediction)
-        if (confidence_score > 0.90):
+        if (confidence_score > confidence_threshold):
             predicted_class = classes[np.argmax(prediction)]
         else:
             predicted_class = "No Fruit Detected"
@@ -46,7 +47,7 @@ def start_video_capture():
         thickness = 2
         image = cv2.putText(frame , f"{predicted_class}" , (50, 50), font, fontScale, color, thickness, cv2.LINE_AA)
         image = cv2.putText(frame , str(round(confidence_score, 2)) , (50, 100), font, fontScale, color, thickness, cv2.LINE_AA)
-        cv2.imshow('Camera', frame)
+        cv2.imshow('Fruit Detection', frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
