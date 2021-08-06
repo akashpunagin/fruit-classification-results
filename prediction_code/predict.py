@@ -8,7 +8,7 @@ from PIL import Image
 print("MODULES IMPORTED")
 
 # Config
-custom_model_path = "/home/akash/Documents/JSS college Stuff/Capstone Project/code/without_validation_split/models/using_nas_net/nas_net_model_5_epochs.h5";
+custom_model_path = "/home/akash/Documents/JSS college Stuff/Capstone Project/code/without_validation_split/models/using_inception_v3/inception_v3_model_10_epochs_old.h5";
 custom_testing_images_path = "testing_images";
 classes = ['fresh apples', 'fresh banana', 'fresh oranges', 'rotten apple', 'rotten banana', 'rotten orange']
 confidence_threshold = 0.90
@@ -18,6 +18,14 @@ model = keras.models.load_model(custom_model_path)
 print("MODEL SUMMARY\n")
 # print(model.summary())
 print("Layers in model: ", len(model.layers))
+
+def getColor(predicted_class):
+    fresh_color = (0, 255, 0)
+    rotten_color = (255, 0, 0)
+    if(predicted_class in classes[:3]):
+        return fresh_color
+    else:
+        return rotten_color
 
 def get_pre_processed_img(image_test):
     img = Image.fromarray(image_test, 'RGB')
@@ -43,10 +51,14 @@ def start_video_capture():
 
         font = cv2.FONT_HERSHEY_SIMPLEX
         fontScale = 1
-        color = (255, 0, 0)
         thickness = 2
-        image = cv2.putText(frame , f"{predicted_class}" , (50, 50), font, fontScale, color, thickness, cv2.LINE_AA)
-        image = cv2.putText(frame , str(round(confidence_score, 2)) , (50, 100), font, fontScale, color, thickness, cv2.LINE_AA)
+
+        image = cv2.putText(frame , f"{predicted_class.upper()}" , (50, 50), font, fontScale,
+            getColor(predicted_class),
+            thickness, cv2.LINE_AA)
+        image = cv2.putText(frame , f"{int(confidence_score * 100)} %", (50, 100), font, fontScale,
+            getColor(predicted_class),
+            thickness, cv2.LINE_AA)
         cv2.imshow('Fruit Detection', frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
